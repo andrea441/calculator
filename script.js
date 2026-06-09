@@ -9,12 +9,15 @@ display.value = "";
 function add(x, y) {
   return x + y;
 }
+
 function subtract(x, y) {
   return x - y;
 }
+
 function multiply(x, y) {
   return x * y;
 }
+
 function divide(x, y) {
   return x / y;
 }
@@ -41,14 +44,20 @@ buttons.forEach((button) => {
         secondNumber += button.textContent;
         display.value = secondNumber;
       }
-    } else if (button.textContent === "C") {
-      firstNumber = "";
-      secondNumber = "";
-      operator = "";
-      display.value = "";
     } else if (button.classList.contains("operator")) {
-      operator = button.textContent;
-      display.value = operator;
+      if (firstNumber !== "" && secondNumber !== "") {
+        firstNumber = operate(
+          operator,
+          Number(firstNumber),
+          Number(secondNumber),
+        );
+        display.value = firstNumber;
+        operator = button.textContent;
+        secondNumber = "";
+      } else if (firstNumber !== "") {
+        operator = button.textContent;
+        display.value = operator;
+      }
     } else if (button.textContent === "=") {
       if (firstNumber !== "" && secondNumber !== "" && operator !== "") {
         firstNumber = operate(
@@ -60,6 +69,11 @@ buttons.forEach((button) => {
         operator = "";
         secondNumber = "";
       }
+    } else if (button.textContent === "C") {
+      firstNumber = "";
+      secondNumber = "";
+      operator = "";
+      display.value = "";
     }
   });
 });
