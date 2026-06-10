@@ -26,14 +26,18 @@ function divide(x, y) {
 
 function operate(operator, firstNumber, secondNumber) {
   if (operator === "+") {
-    return add(firstNumber, secondNumber);
+    return add(firstNumber, secondNumber).toString();
   } else if (operator === "-") {
-    return subtract(firstNumber, secondNumber);
+    return subtract(firstNumber, secondNumber).toString();
   } else if (operator === "*") {
-    return multiply(firstNumber, secondNumber);
+    return multiply(firstNumber, secondNumber).toString();
   } else if (operator === "/") {
-    return divide(firstNumber, secondNumber);
+    return divide(firstNumber, secondNumber).toString();
   }
+}
+
+function isValidNumber(num) {
+  return num !== "" && !num.endsWith(".");
 }
 
 function clearCalculator() {
@@ -63,25 +67,52 @@ function handleOperator(value) {
     resultDisplayed = false;
   }
 
-  if (firstNumber !== "" && secondNumber !== "") {
+  if (isValidNumber(firstNumber) && isValidNumber(secondNumber)) {
     firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
     display.value = firstNumber;
     operator = value;
     secondNumber = "";
-  } else if (firstNumber !== "") {
+  } else if (isValidNumber(firstNumber)) {
     operator = value;
     display.value = operator;
   }
 }
 
 function handleEquals() {
-  if (firstNumber !== "" && secondNumber !== "" && operator !== "") {
+  if (
+    isValidNumber(firstNumber) &&
+    isValidNumber(secondNumber) &&
+    operator !== ""
+  ) {
     firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
     display.value = firstNumber;
     operator = "";
     secondNumber = "";
 
     resultDisplayed = true;
+  }
+}
+
+function handleBackspace() {
+  if (operator === "" && firstNumber.length > 0) {
+    firstNumber = firstNumber.slice(0, -1);
+    display.value = firstNumber;
+  } else if (operator !== "" && secondNumber === "") {
+    operator = "";
+    display.value = operator;
+  } else if (secondNumber.length > 0) {
+    secondNumber = secondNumber.slice(0, -1);
+    display.value = secondNumber;
+  }
+}
+
+function handleFloat() {
+  if (operator === "" && !firstNumber.includes(".")) {
+    firstNumber += ".";
+    display.value = firstNumber;
+  } else if (operator !== "" && !secondNumber.includes(".")) {
+    secondNumber += ".";
+    display.value = secondNumber;
   }
 }
 
@@ -95,8 +126,12 @@ buttons.forEach((button) => {
       handleOperator(value);
     } else if (value === "=") {
       handleEquals();
-    } else if (value === "C") {
+    } else if (value === "AC") {
       clearCalculator();
+    } else if (value === "⌫") {
+      handleBackspace();
+    } else if (value === ".") {
+      handleFloat();
     }
   });
 });
