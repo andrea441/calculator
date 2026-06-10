@@ -4,6 +4,8 @@ const buttons = document.querySelectorAll(".btn");
 let firstNumber = "";
 let operator = "";
 let secondNumber = "";
+let resultDisplayed = false;
+
 display.value = "";
 
 function add(x, y) {
@@ -34,46 +36,67 @@ function operate(operator, firstNumber, secondNumber) {
   }
 }
 
+function clearCalculator() {
+  firstNumber = "";
+  secondNumber = "";
+  operator = "";
+  display.value = "";
+}
+
+function handleNumber(value) {
+  if (resultDisplayed) {
+    firstNumber = "";
+    resultDisplayed = false;
+  }
+
+  if (operator === "") {
+    firstNumber += value;
+    display.value = firstNumber;
+  } else {
+    secondNumber += value;
+    display.value = secondNumber;
+  }
+}
+
+function handleOperator(value) {
+  if (resultDisplayed) {
+    resultDisplayed = false;
+  }
+
+  if (firstNumber !== "" && secondNumber !== "") {
+    firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
+    display.value = firstNumber;
+    operator = value;
+    secondNumber = "";
+  } else if (firstNumber !== "") {
+    operator = value;
+    display.value = operator;
+  }
+}
+
+function handleEquals() {
+  if (firstNumber !== "" && secondNumber !== "" && operator !== "") {
+    firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
+    display.value = firstNumber;
+    operator = "";
+    secondNumber = "";
+
+    resultDisplayed = true;
+  }
+}
+
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
+    const value = button.textContent;
+
     if (button.classList.contains("number")) {
-      if (operator === "") {
-        firstNumber += button.textContent;
-        display.value = firstNumber;
-      } else {
-        secondNumber += button.textContent;
-        display.value = secondNumber;
-      }
+      handleNumber(value);
     } else if (button.classList.contains("operator")) {
-      if (firstNumber !== "" && secondNumber !== "") {
-        firstNumber = operate(
-          operator,
-          Number(firstNumber),
-          Number(secondNumber),
-        );
-        display.value = firstNumber;
-        operator = button.textContent;
-        secondNumber = "";
-      } else if (firstNumber !== "") {
-        operator = button.textContent;
-        display.value = operator;
-      }
-    } else if (button.textContent === "=") {
-      if (firstNumber !== "" && secondNumber !== "" && operator !== "") {
-        firstNumber = operate(
-          operator,
-          Number(firstNumber),
-          Number(secondNumber),
-        );
-        display.value = firstNumber;
-        operator = "";
-        secondNumber = "";
-      }
-    } else if (button.textContent === "C") {
-      firstNumber = "";
-      secondNumber = "";
-      operator = "";
-      display.value = "";
+      handleOperator(value);
+    } else if (value === "=") {
+      handleEquals();
+    } else if (value === "C") {
+      clearCalculator();
     }
   });
 });
