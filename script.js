@@ -67,14 +67,17 @@ function handleOperator(value) {
     resultDisplayed = false;
   }
 
-  if (isValidNumber(firstNumber) && isValidNumber(secondNumber)) {
-    firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
-    display.value = firstNumber;
+  if (isValidNumber(firstNumber)) {
     operator = value;
-    secondNumber = "";
-  } else if (isValidNumber(firstNumber)) {
-    operator = value;
-    display.value = operator;
+    if (isValidNumber(secondNumber)) {
+      firstNumber = operate(
+        operator,
+        Number(firstNumber),
+        Number(secondNumber),
+      );
+      display.value = firstNumber;
+      secondNumber = "";
+    }
   }
 }
 
@@ -97,9 +100,6 @@ function handleBackspace() {
   if (operator === "" && firstNumber.length > 0) {
     firstNumber = firstNumber.slice(0, -1);
     display.value = firstNumber;
-  } else if (operator !== "" && secondNumber === "") {
-    operator = "";
-    display.value = operator;
   } else if (secondNumber.length > 0) {
     secondNumber = secondNumber.slice(0, -1);
     display.value = secondNumber;
