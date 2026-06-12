@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
   <body>
     <div class="calculator">
-      <input type="text" id="display" readonly />
+      <div id="display"></div>
       <div class="buttons">
         <div class="rows">
           <div class="row">
@@ -40,7 +42,7 @@
           <button class="btn operator">/</button>
           <button class="btn operator">-</button>
           <button class="btn operator">+</button>
-          <button class="btn utility big" id="equals">=</button>
+          <button class="btn utility big">=</button>
         </div>
       </div>
     </div>

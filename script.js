@@ -6,7 +6,7 @@ let operator = "";
 let secondNumber = "";
 let resultDisplayed = false;
 
-display.value = "";
+updateDisplay("");
 
 function add(x, y) {
   return x + y;
@@ -40,11 +40,15 @@ function isValidNumber(num) {
   return num !== "" && !num.endsWith(".");
 }
 
+function updateDisplay(text) {
+  display.textContent = text;
+}
+
 function clearCalculator() {
   firstNumber = "";
   secondNumber = "";
   operator = "";
-  display.value = "";
+  updateDisplay("");
 }
 
 function handleNumber(value) {
@@ -55,10 +59,10 @@ function handleNumber(value) {
 
   if (operator === "") {
     firstNumber += value;
-    display.value = firstNumber;
+    updateDisplay(firstNumber);
   } else {
     secondNumber += value;
-    display.value = secondNumber;
+    updateDisplay(secondNumber);
   }
 }
 
@@ -75,7 +79,7 @@ function handleOperator(value) {
         Number(firstNumber),
         Number(secondNumber),
       );
-      display.value = firstNumber;
+      updateDisplay(firstNumber);
       secondNumber = "";
     }
   }
@@ -88,7 +92,7 @@ function handleEquals() {
     operator !== ""
   ) {
     firstNumber = operate(operator, Number(firstNumber), Number(secondNumber));
-    display.value = firstNumber;
+    updateDisplay(firstNumber);
     operator = "";
     secondNumber = "";
 
@@ -99,20 +103,20 @@ function handleEquals() {
 function handleBackspace() {
   if (operator === "" && firstNumber.length > 0) {
     firstNumber = firstNumber.slice(0, -1);
-    display.value = firstNumber;
+    updateDisplay(firstNumber);
   } else if (secondNumber.length > 0) {
     secondNumber = secondNumber.slice(0, -1);
-    display.value = secondNumber;
+    updateDisplay(secondNumber);
   }
 }
 
 function handleFloat() {
   if (operator === "" && !firstNumber.includes(".")) {
     firstNumber += ".";
-    display.value = firstNumber;
+    updateDisplay(firstNumber);
   } else if (operator !== "" && !secondNumber.includes(".")) {
     secondNumber += ".";
-    display.value = secondNumber;
+    updateDisplay(secondNumber);
   }
 }
 
