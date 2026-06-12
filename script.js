@@ -6,8 +6,6 @@ let operator = "";
 let secondNumber = "";
 let resultDisplayed = false;
 
-updateDisplay("");
-
 function add(x, y) {
   return x + y;
 }
@@ -42,6 +40,22 @@ function isValidNumber(num) {
 
 function updateDisplay(text) {
   display.textContent = text;
+}
+
+function handleInput(value) {
+  if ("0123456789".includes(value)) {
+    handleNumber(value);
+  } else if ("+-/*".includes(value)) {
+    handleOperator(value);
+  } else if (value === "=" || value === "Enter") {
+    handleEquals();
+  } else if (value === "AC" || value === "Escape") {
+    clearCalculator();
+  } else if (value === "⌫" || value === "Backspace") {
+    handleBackspace();
+  } else if (value === ".") {
+    handleFloat();
+  }
 }
 
 function clearCalculator() {
@@ -138,4 +152,22 @@ buttons.forEach((button) => {
       handleFloat();
     }
   });
+});
+
+document.addEventListener("keydown", (event) => {
+  const key = event.key;
+  console.log(typeof key);
+  if ("0123456789".includes(key)) {
+    handleNumber(key);
+  } else if ("-+/*".includes(key)) {
+    handleOperator(key);
+  } else if (key === "Enter") {
+    handleEquals(key);
+  } else if (key === "Escape") {
+    clearCalculator();
+  } else if (key === "Backspace") {
+    handleBackspace(key);
+  } else if (key === ".") {
+    handleFloat();
+  }
 });
